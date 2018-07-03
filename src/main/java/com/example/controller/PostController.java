@@ -66,6 +66,7 @@ public class PostController {
         }else {
             //String str = "user/post";
             logger.info("Save Post moi thanh cong trong sever");
+            //logger.info("User_id cua Post = "+post.getId().toString());
             postService.savePost(post);
             modelAndView.addObject("successMessage","We have push your post to sever");
             modelAndView.setViewName("user/post");
