@@ -1,10 +1,6 @@
 package com.example.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
@@ -35,6 +31,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
+	}
+
+	@Override
+	public Optional<User> findUserByName(String name){
+		return userRepository.findByName(name);
 	}
 
 	@Override

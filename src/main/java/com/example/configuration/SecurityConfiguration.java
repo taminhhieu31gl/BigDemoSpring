@@ -38,7 +38,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/").permitAll()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/registration").permitAll()
-				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+				.antMatchers("/user/**").hasAuthority("USER")
+				.antMatchers("/admin/**","/user/**").hasAuthority("ADMIN").anyRequest()
 				.authenticated();
 		http.rememberMe().key("Unique").tokenValiditySeconds(20);
 		http.csrf().disable().formLogin()
