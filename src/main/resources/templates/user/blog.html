@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>Spring Boot Thymeleaf + Spring Security</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+        <form th:action="@{/admin/home}" method="get">
+            <button class="btn btn-md btn-danger btn-block" name="registration"
+                    type="Submit">Back To Home</button>
+        </form>
+        <div class="alert alert-info" th:if="${none}" th:utext="${none}"></div>
+        <!--Posts -->
+        <div class="Post" th:each="post:${posts}">
+            <h1 th:text="${post.title}" style="font-size: 30px;color: #004080">Title</h1>
+            <div th:text="'Created : ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by '">Created by</div>
+            <div><a th:text="${post.user.name}" th:href="@{'/blog/' + ${post.user.name}}">User</a></div>
+            <h3 th:text="${post.body}">Body</h3>
+
+            <!--Only show these buttons if the user is the owner of post-->
+            <!--div sec:authorize="isAuthenticated()" th:if="${username}">
+                <div class="row">
+                    <a th:href="@{'/delpost/{id}'(id=${post.id})}" class="col-md-2">
+                        <button type="button" class="btn btn-primary btn-block" th:text="Edit">Edit</button>
+                    </a>
+
+                </div>
+            </div-->
+        </div>
+
+</div>
+<!-- /.container -->
+
+</body>
+</html>

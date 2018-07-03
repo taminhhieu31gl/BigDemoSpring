@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
 
@@ -33,6 +34,7 @@ public class Post {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @NotNull
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)

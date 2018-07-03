@@ -115,4 +115,11 @@ public class User {
 		this.roles = roles;
 	}
 
+    public Collection<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Collection<Post> posts) {
+        this.posts = posts;
+    }
 }

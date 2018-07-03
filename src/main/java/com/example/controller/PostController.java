@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Optional;
 
 @Controller
 public class PostController {
@@ -38,10 +38,10 @@ public class PostController {
             Post post = new Post();
             post.setUser(user);
             //Set current Date for Post
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            /*SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date date = new Date();
             post.setCreateDate(date);
-            logger.info("Current Date = "+post.getCreateDate());
+            logger.info("Current Date = "+post.getCreateDate());*/
             //Model and View object
             modelAndView.addObject("post",post);
             modelAndView.setViewName("user/postform");
@@ -69,10 +69,30 @@ public class PostController {
             //logger.info("User_id cua Post = "+post.getId().toString());
             postService.savePost(post);
             modelAndView.addObject("successMessage","We have push your post to sever");
-            modelAndView.setViewName("user/post");
+            modelAndView.setViewName("user/postform");
         }
         return modelAndView;
     }
     //Post : Method delete
-
+    @RequestMapping(value = "/delpost/{id}",method = RequestMethod.DELETE)
+    public ModelAndView delpost(@PathVariable Long id,Principal principal){
+        Optional<Post> post = postService.findPostById(id);
+        ModelAndView modelAndView = new ModelAndView();
+        if(post.isPresent()){
+            Post tempPost = post.get();
+            if(isValid(principal,tempPost)){
+                postService.deletePost(tempPost);
+                modelAndView.setViewName("user/post");
+            }else {
+                modelAndView.setViewName("access-denied");
+            }
+        }else {
+            modelAndView.setViewName("access-denied");
+        }
+        return  modelAndView;
+    }
+    //Authorize User
+    private Boolean isValid(Principal principal,Post post){
+        return principal!=null && principal.getName().equals(post.getUser().getEmail());
+    }
 }

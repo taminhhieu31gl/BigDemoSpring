@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
 <title>Admin Page</title>
@@ -36,6 +36,13 @@
 						<button class="btn btn-primary btn"
 								type="Submit" style="font-size: 20px">New Post</button>
 					</form>
+				</div>
+				<div sec:authorize="isAuthenticated()">
+					<div class="row">
+						<a th:href="@{'/blog/{id}'(id=${user.id})}" class="col-md-2">
+							<button type="button" class="btn btn-primary btn-block" th:text="blog">Blog</button>
+						</a>
+					</div>
 				</div>
 				<div class="panel-body">
 					<img th:src="@{/images/dog.gif}" class="img-responsive center-block" width="400" height="400" alt="Beer" />
