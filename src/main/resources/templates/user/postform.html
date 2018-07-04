@@ -17,7 +17,11 @@
         </form>
         <!--Show this info message only if posted successfully-->
         <div class="alert alert-info" th:if="${successMessage}" th:utext="${successMessage}"></div>
-
+        <!--Create new Post button-->
+        <form th:action="@{/newpost}" method="get">
+            <button class="btn btn-lg btn-link" name="createnewpost"
+                    type="Submit">Create new post</button>
+        </form>
         <!--New Post Form-->
         <div class="row" style="margin-top:20px">
             <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">

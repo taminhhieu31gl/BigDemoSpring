@@ -15,11 +15,33 @@
                     type="Submit">Back To Home</button>
         </form>
         <div class="alert alert-info" th:if="${none}" th:utext="${none}"></div>
+        <div class="row">
+            <div class="col-md-3">
+                <a th:href="@{/post}"
+                   style="font-size: 30px;color: #004080;font-weight: bold">Posts from others</a>
+            </div>
+        </div>
         <!--Posts -->
         <div class="Post" th:each="post:${posts}">
-            <h1 th:text="${post.title}" style="font-size: 30px;color: #004080">Title</h1>
+            <div class="row" th:if="${checkValid == true}">
+                <h1 th:text="${post.title}" style="font-size: 30px;color: #004080">Title</h1>
+                <div class="col-md-1">
+                    <form action="#" th:action="@{'/delpost/{id}'(id=${post.id})}" th:method="delete"
+                          class="form-inline ">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit" class="btn  btn-link" th:text=" Delete">Delete</button>
+                    </form>
+                </div>
+               <div class="col-md-1">
+                   <form action="#" th:action="@{'/editpost/{id}'(id=${post.id})}" th:method="get"
+                         class="form-inline">
+                       <input type="hidden" name="_method" value="get"/>
+                       <button type="submit" class="btn  btn-link" th:text=" Edit">Edit</button>
+                   </form>
+               </div>
+            </div>
             <div th:text="'Created : ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by '">Created by</div>
-            <div><a th:text="${post.user.name}" th:href="@{'/blog/' + ${post.user.name}}">User</a></div>
+            <div><a th:text="${post.user.name}" th:href="@{'/blog/' + ${post.user.id}}">User</a></div>
             <h3 th:text="${post.body}">Body</h3>
 
             <!--Only show these buttons if the user is the owner of post-->

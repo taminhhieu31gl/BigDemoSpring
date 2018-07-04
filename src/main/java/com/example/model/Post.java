@@ -32,7 +32,7 @@ public class Post {
     @CreationTimestamp
     private Date createDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @NotNull
     private User user;

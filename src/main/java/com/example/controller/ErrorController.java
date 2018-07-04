@@ -8,9 +8,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ErrorController {
 
-    @RequestMapping(value = "/error",method = RequestMethod.GET)
+    @RequestMapping(value = "/accessdenied",method = RequestMethod.GET)
     public ModelAndView error(){
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("messagesError",
+                "You are not the owner of this post!");
         modelAndView.setViewName("access-denied");
         return modelAndView;
     }

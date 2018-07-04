@@ -3,10 +3,18 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Security with Spring Boot</title>
+    <title>Access deny page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <h1>Access is Denied!</h1>
-<a style="color: blue" th:href="@{/}">Back To Home</a>
+<!-- Message error -->
+<div class="alert alert-info" th:if="${messagesError}" th:utext="${messagesError}"></div>
+<!--Back to Home button-->
+<a style="color: blue" th:href="@{/admin/home}">
+    <button type="submit" class="btn btn-md btn-link">Back To Home</button>
+</a>
 </body>
 </html>
