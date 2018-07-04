@@ -27,8 +27,14 @@
                style="font-size: 30px;color: #004080">User</a>
         </div>
         <div class="Post" th:each="post:${user.posts}">
-            <div class="row" th:if="${post.id}">
-                <h1 th:text="${post.title}" style="font-size: 30px;color: #004080">Title</h1>
+            <div class="row">
+                <form action="#" th:action="@{'/post/{id}'(id=${post.id})}" th:method="get"
+                      class="form-inline ">
+                    <input type="hidden" name="_method" value="get"/>
+                    <button type="submit" class="btn  btn-link" style="color: black">
+                        <h2 th:text="${post.title}">Title</h2>
+                    </button>
+                </form>
             </div>
             <div th:text="'Created : ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by '">Created by</div>
             <div><a th:text="${post.user.name}" th:href="@{'/blog/' + ${post.user.id}}">User</a></div>

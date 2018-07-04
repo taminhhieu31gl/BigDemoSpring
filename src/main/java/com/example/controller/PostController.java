@@ -1,6 +1,8 @@
 package com.example.controller;
 
+import com.example.model.Comment;
 import com.example.model.Post;
+import com.example.model.Role;
 import com.example.model.User;
 import com.example.service.PostService;
 import com.example.service.UserService;
@@ -17,6 +19,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 
 @Controller
@@ -34,6 +38,52 @@ public class PostController {
         modelAndView.addObject("alluser",userService.findAllUser());
         modelAndView.setViewName("user/post");
         return modelAndView;
+    }
+    //Post method get by id
+    @RequestMapping(value = "/post/{id}",method = RequestMethod.GET)
+    public ModelAndView findpostbyid(@PathVariable Long id,Principal principal){
+        ModelAndView modelAndView = new ModelAndView();
+        Optional<Post> post = postService.findPostById(id);
+        User isAdmin = userService.findUserByEmail(principal.getName());
+        Boolean checkValid = false;
+        logger.info("Comment Post Get method");
+        if (post.isPresent()) {
+            Comment comment = new Comment();
+            comment.setUser(isAdmin);
+            comment.setPost(post.get());
+            modelAndView.addObject("post", post.get());
+            modelAndView.addObject("comment",comment);
+            logger.info("Method Post Comment Succeed!");
+            if(isValid(principal,post.get())){
+                checkValid = true;
+                modelAndView.addObject("checkValid",checkValid);
+            }else {
+                modelAndView.addObject("checkValid",checkValid);
+            }
+        }else {
+            modelAndView.addObject("postnotexits","Your Post not exits!");
+        }
+        modelAndView.setViewName("user/singlepost");
+        return  modelAndView;
+    }
+    //Post comment method Post
+    @RequestMapping(value = "/post/{id}",method = RequestMethod.POST)
+    public RedirectView postcomment(@PathVariable Long id,
+                                    @Valid Comment comment,BindingResult bindingResult){
+        logger.info("Post Comment Method!");
+        Optional<Post> post = postService.findPostById(id);
+        RedirectView redirectView = new RedirectView();
+        if(bindingResult.hasErrors()){
+            logger.info("*********Error = "+bindingResult.toString());
+        }
+        if(post.isPresent()) {
+            logger.info("Save comment into sever");
+            post.get().setComments(new HashSet<Comment>(Arrays.asList(comment)));
+            postService.savePost(post.get());
+        }
+        //redirectView.setContextRelative(true);
+        redirectView.setUrl("/post/"+id.toString());
+        return  redirectView;
     }
     //New post GET method
     @RequestMapping(value = "/newpost",method = RequestMethod.GET)

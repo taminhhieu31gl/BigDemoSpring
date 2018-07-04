@@ -1,6 +1,8 @@
 package com.example.service;
 
+import com.example.model.Comment;
 import com.example.model.Post;
+import com.example.repository.CommentRepository;
 import com.example.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,17 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService{
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Override
     public void savePost(Post post){
         postRepository.save(post);
+    }
+
+    @Override
+    public void saveComment(Comment comment){
+        commentRepository.save(comment);
     }
 
     @Override
