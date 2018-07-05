@@ -22,11 +22,6 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void saveComment(Comment comment){
-        commentRepository.save(comment);
-    }
-
-    @Override
     public void deletePost(Post post){
         postRepository.delete(post);
     }

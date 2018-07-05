@@ -19,8 +19,6 @@
 		</form>
         <div style="text-align: center" class="row">
             <span>
-				<a th:href="@{/admin/vocab}"></a>
-				<a th:href="@{/admin/timemail}">Verify email</a>
 				<div>
 					<!--Button action New Post -->
 					<form th:action="@{/post}" method="get">
@@ -40,13 +38,13 @@
 					<!--Button action New Post -->
 					<form th:action="@{/newpost}" method="get">
 						<button class="btn btn-primary btn"
-								type="Submit" style="font-size: 20px">New Post</button>
+								type="Submit" style="font-size: 20px">Create new Post</button>
 					</form>
 				</div>
 				<div sec:authorize="isAuthenticated()">
 					<div class="row">
 						<a th:href="@{'/blog/{id}'(id=${user.id})}" class="col-md-2">
-							<button type="button" class="btn btn-primary btn-block" th:text="blog">Blog</button>
+							<button type="button" class="btn btn-primary" th:text="'Your Blog'">Blog</button>
 						</a>
 					</div>
 				</div>

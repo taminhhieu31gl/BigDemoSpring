@@ -1,10 +1,21 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Boot Thymeleaf + Spring Security</title>
+    <title>All Post</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        hr { /* Not really supposed to work, but does */
+            border: 0;
+            height: 2px;
+            background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+            background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+            background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+            background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        }
+
+    </style>
 </head>
 <body>
 
@@ -16,29 +27,45 @@
             Back To Home</button>
     </form>
     <div class="row">
-        <div class="col-md-3">
-            <h1>All Post</h1>
+        <div class="col-md-12">
+            <h1 style="align-self: center">Post from all users</h1>
         </div>
     </div>
     <div class="User" th:each="user:${alluser}">
+        <!--Author-->
         <div>
+            <hr>
+            <p>Author</p>
             <a th:text="${user.name}"
                 th:href="@{'/blog/' + ${user.id}}"
                style="font-size: 30px;color: #004080">User</a>
+            <span class="glyphicon glyphicon-ok-circle"></span>
         </div>
+        <!--Post-->
         <div class="Post" th:each="post:${user.posts}">
             <div class="row">
                 <form action="#" th:action="@{'/post/{id}'(id=${post.id})}" th:method="get"
                       class="form-inline ">
+                    <span class="glyphicon glyphicon-globe"></span>
                     <input type="hidden" name="_method" value="get"/>
                     <button type="submit" class="btn  btn-link" style="color: black">
                         <h2 th:text="${post.title}">Title</h2>
                     </button>
                 </form>
             </div>
-            <div th:text="'Created : ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by '">Created by</div>
-            <div><a th:text="${post.user.name}" th:href="@{'/blog/' + ${post.user.id}}">User</a></div>
-            <h3 th:text="${post.body}">Body</h3>
+            <!--Author and create-->
+            <div class="row">
+                <div class="col-md-3"
+                     th:text="'Created in: ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by'">
+                    Created by
+                </div>
+                <div class="col-md-4">
+                    <a th:text="${post.user.name}" th:href="@{'/blog/' + ${post.user.id}}">User</a>
+                </div>
+            </div>
+            <!---->
+            <p th:text="${post.body}"
+               style="margin-left: 20px;font-family:monospace;font-size: 30px; ">Body</p>
         </div>
 
     </div>

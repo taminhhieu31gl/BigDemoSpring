@@ -14,7 +14,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "comment_id")
-    private int id;
+    private Long id;
 
     @Column(name = "body", columnDefinition = "TEXT")
     @NotEmpty(message = "*Please write something")
@@ -35,11 +35,11 @@ public class Comment {
     @NotNull
     private User user;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

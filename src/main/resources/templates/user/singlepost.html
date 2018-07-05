@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Boot Thymeleaf + Spring Security</title>
+    <title>Single Post Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -11,6 +11,16 @@
 <div class="container">
     <div class="container">
         <!--Post-->
+        <div class="row">
+            <div class="col-md-9">
+
+            </div>
+            <div class="col-md-3" style="margin-top: 20px">
+                <a th:href="@{/post}" class="btn btn-info btn-lg">
+                    <span class="glyphicon glyphicon-backward"></span> All Post
+                </a>
+            </div>
+        </div>
         <div class="Post">
             <h1 th:text="${post.title}">Title</h1>
             <!-- Show when pincipal user is admin or owner of this post-->
@@ -30,19 +40,60 @@
                     </form>
                 </div>
             </div>
-            <div th:text="'Created: ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by '">Created by</div>
-            <div><a th:text="${post.user.name}" th:href="@{'/blog/' + ${post.user.id}}">User</a></div>
-            <h3 th:text="${post.body}">Body</h3>
+            <!--Author and create-->
+            <div class="row">
+                <div class="col-md-3"
+                     th:text="'Created in: ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by'">
+                    Created by
+                </div>
+                <div class="col-md-4">
+                    <a th:text="${post.user.name}" th:href="@{'/blog/' + ${post.user.id}}">User</a>
+                </div>
+            </div>
+            <!---->
+            <p th:text="${post.body}"
+               style="margin-left: 20px;font-family:monospace;font-size: 20px; ">Body</p>
         </div>
-        <!--Comment -->
+        <!--Comment-->
+        <hr>
         <h3>Comment :</h3>
-        <div class="comment" th:each="comment : ${post.comments}">
-            <h3 th:text="${comment.body}">Body</h3>
-            <div th:text="'Created: ' + ${#dates.format(comment.createDate, 'dd-MMM-yyyy')} + ' by '">
-                Created by
+        <div class="comment" th:each="comment : ${post.comments}"
+             style="margin-top: 20px;">
+
+            <!-- Show when pincipal user is admin or owner of this post-->
+            <div class="row">
+                <!--Show delete comment button-->
+                <div class="col-md-1" th:if="${checkValid == true}">
+                    <form action="#" th:action="@{'/delcomment/{id}'(id=${comment.id})}" th:method="delete"
+                          class="form-inline ">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit" class="btn  btn-link" th:text=" Delete">Delete</button>
+                    </form>
+                </div>
+                <div class="col-md-11">
+                    <p th:text="'> '+${comment.body}"
+                       style="margin-left: 30px;font-family: monospace;font-size: 20px;">Body</p>
+                </div>
+                <!--div class="col-md-1">
+                    <form action="#" th:action="@{'/editpost/{id}'(id=${post.id})}" th:method="get"
+                          class="form-inline">
+                        <input type="hidden" name="_method" value="get"/>
+                        <button type="submit" class="btn  btn-link" th:text=" Edit">Edit</button>
+                    </form>
+                </div-->
             </div>
-            <div><a th:text="${comment.user.name}" th:href="@{'/blog/' + ${comment.user.id}}">User</a>
+            <!--Author and create-->
+            <div class="row">
+                <div class="col-md-3"
+                        th:text="'Created in  ' + ${#dates.format(comment.createDate, 'dd-MMM-yyyy')} + ' by '">
+                    Created by
+                </div>
+                <div class="col-md-4">
+                    <a th:text="${comment.user.name}" th:href="@{'/blog/' + ${comment.user.id}}">User</a>
+                </div>
             </div>
+            <!---->
+
         </div>
         <!--Write comment-->
         <div class="container">
@@ -53,7 +104,8 @@
                           th:object="${comment}" method="post" role="form">
 
                         <h2 class="text-center">Write new comment</h2>
-
+                        <div class="alert alert-info" th:if="${errortyping}"
+                             th:utext="${errortyping}"></div>
                         <div class="form-group">
                             <label th:if="${#fields.hasErrors('body')}" th:errors="*{body}"
                                    class="alert alert-danger"></label>
@@ -63,7 +115,6 @@
 
                         <input type="hidden" th:field="*{post}"/>
                         <input type="hidden" th:field="*{user}"/>
-                        <input type="hidden" th:field="*{id}"/>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block">Comment</button>
